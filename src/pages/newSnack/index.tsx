@@ -1,12 +1,52 @@
 import { useState } from "react";
 import ButtonStyled from "../../components/button";
+import { useNavigate } from "react-router-dom";
 
 export default function NewSnack() {
-  const [isOnDiet, setIsOnDiet] = useState<null | boolean>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    date: '',
+    time: '',
+    isOnDiet: null as boolean | null,
+  });
 
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  // Input genérico para texto
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Seleção de dieta (sim/não)
+  const handleDietSelect = (value: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      isOnDiet: value,
+    }));
+  };
+
+  // Validação e redirecionamento
   const handleNewSnack = () => {
-    console.log(isOnDiet)
-  }
+    const { name, description, date, time, isOnDiet } = formData;
+
+    if (!name || !description || !date || !time || isOnDiet === null) {
+      setError("Preencha todos os campos");
+      return;
+    }
+
+    setError('');
+    if (isOnDiet) {
+      navigate('/congratulations');
+    } else {
+      navigate('/pity');
+    }
+  };
 
   return (
     <section>
@@ -15,26 +55,56 @@ export default function NewSnack() {
       </header>
 
       <main className="relative container !pt-[50px] top-[-20px] rounded-t-[20px] bg-white flex flex-col gap-6">
+        
+        {error && (
+          <div className="w-full h-[50px] flex items-center justify-center bg-[#f4e6e7] border border-[#bf3b44] rounded-lg">
+            <span className="text-[#bf3b44] font-bold">{error}</span>
+          </div>
+        )}
+
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <span className="font-semibold text-[16px]">Nome</span>
-            <input className="w-full h-[50px] !pl-4 border border-[#dddedf] rounded-md" type="text" />
+            <input
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full h-[50px] !pl-4 border border-[#dddedf] rounded-md"
+              type="text"
+            />
           </div>
 
           <div className="flex flex-col gap-2">
             <span className="font-semibold text-[16px]">Descrição</span>
-            <input className="w-full h-[150px] !pl-4 border border-[#dddedf] rounded-md" type="text" />
+            <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="w-full h-[150px] !p-4 border border-[#dddedf] rounded-md resize-none"
+                />
           </div>
 
           <div className="flex gap-8">
             <div className="flex flex-col gap-2">
               <span className="font-semibold text-[16px]">Data</span>
-              <input className="w-full h-[50px] !pl-4 border border-[#dddedf] rounded-md" type="text" />
+              <input
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className="w-full h-[50px] !pl-4 border border-[#dddedf] rounded-md"
+                type="text"
+              />
             </div>
 
             <div className="flex flex-col gap-2">
               <span className="font-semibold text-[16px]">Hora</span>
-              <input className="w-full h-[50px] !pl-4 border border-[#dddedf] rounded-md" type="text" />
+              <input
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                className="w-full h-[50px] !pl-4 border border-[#dddedf] rounded-md"
+                type="text"
+              />
             </div>
           </div>
 
@@ -42,9 +112,11 @@ export default function NewSnack() {
             <h3 className="font-semibold text-[16px]">Está dentro da dieta?</h3>
             <div className="flex gap-8">
               <button
-                onClick={() => setIsOnDiet(true)}
+                onClick={() => handleDietSelect(true)}
                 className={`w-full h-[50px] rounded-lg flex items-center justify-center gap-2 text-center border ${
-                  isOnDiet === true ? "border-[#639339] bg-[#e5f7eb]" : "bg-[#eff0f0] border-transparent"
+                  formData.isOnDiet === true
+                    ? "border-[#639339] bg-[#e5f7eb]"
+                    : "bg-[#eff0f0] border-transparent"
                 }`}
               >
                 <div className="w-2 h-2 rounded-full bg-[#639339]"></div>
@@ -52,9 +124,11 @@ export default function NewSnack() {
               </button>
 
               <button
-                onClick={() => setIsOnDiet(false)}
+                onClick={() => handleDietSelect(false)}
                 className={`w-full h-[50px] rounded-lg flex items-center justify-center gap-2 text-center border ${
-                  isOnDiet === false ? "border-[#bf3b44] bg-[#f4e6e7]" : "bg-[#eff0f0] border-transparent"
+                  formData.isOnDiet === false
+                    ? "border-[#bf3b44] bg-[#f4e6e7]"
+                    : "bg-[#eff0f0] border-transparent"
                 }`}
               >
                 <div className="w-2 h-2 rounded-full bg-[#bf3b44]"></div>
@@ -64,7 +138,7 @@ export default function NewSnack() {
           </div>
         </div>
 
-        <div className="!mt-[180px]">
+        <div className="!mt-[50px]">
           <ButtonStyled onClick={handleNewSnack} textButton="Cadastrar refeição" />
         </div>
       </main>
