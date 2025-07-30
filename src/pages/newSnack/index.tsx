@@ -2,6 +2,9 @@ import { useState } from "react";
 import ButtonStyled from "../../components/button";
 import { useNavigate } from "react-router-dom";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
 export default function NewSnack() {
   const [formData, setFormData] = useState({
     name: '',
@@ -50,7 +53,10 @@ export default function NewSnack() {
 
   return (
     <section>
-      <header className="!py-10 bg-[#dddedf]">
+      <header className="!py-10 bg-[#dddedf] w-full flex items-center justify-evenly text-center">
+        <div className="absolute left-[5%]">
+            <FontAwesomeIcon onClick={() => navigate('/home')} className="text-2xl" icon={faArrowLeft} />
+        </div>
         <h1 className="text-center text-[24px] font-bold">Nova refeição</h1>
       </header>
 
