@@ -11,7 +11,7 @@ export default function OutDietPage() {
     }
 
     return(
-        <section className='w-full h-screen flex flex-col gap-8 items-center justify-center'>
+        <section className='container w-full h-screen flex flex-col gap-8 items-center justify-center'>
             <div className=' text-center flex flex-col gap-2'>
                 <h1 className='!text-[#bf3b44] text-3xl font-bold'>Que pena!</h1>
                 <p className='text-[16px]'>Você <span className='font-bold'>saiu da dieta</span> dessa vez, mas continue se esforçando e não desista!</p>

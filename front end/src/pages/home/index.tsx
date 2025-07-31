@@ -15,7 +15,7 @@ export default function Home() {
         <div className="container flex flex-col gap-9">
             <LogoSmall/>
 
-            <div className="!py-9 w-full bg-[#E5F0DB] text-center rounded-xl flex flex-col gap-2">
+            <div onClick={() => navigate('/stats')} className="!py-9 w-full bg-[#E5F0DB] text-center rounded-xl flex flex-col gap-2">
                 <h2 className="text-[#333638] font-semibold text-4xl">90,86%</h2>
                 <span className="text-[#333638] text-[16px] font-medium">das refeições dentro da dieta</span>
             </div>

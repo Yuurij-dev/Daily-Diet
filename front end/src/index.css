@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import "tailwindcss";
 
 *{
   padding: 0;
@@ -7,7 +7,6 @@
   box-sizing: border-box;
   font-family: "Nunito Sans", sans-serif;
   line-height: 120%;
-  color: #333638;
 }
 
 body{
