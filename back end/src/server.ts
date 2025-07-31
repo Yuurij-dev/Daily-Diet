@@ -1,8 +1,14 @@
 import fastify from "fastify";
-import { db } from "./database";
 import { env } from "./env";
 import { usersRoutes } from "./routes/users";
+import cors from '@fastify/cors';
+
 const app = fastify()
+
+
+await app.register(cors, {
+  origin: 'http://localhost:5173'
+});
 
 app.register(usersRoutes,{
     prefix: 'users'
