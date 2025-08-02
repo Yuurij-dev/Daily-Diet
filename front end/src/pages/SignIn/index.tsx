@@ -2,8 +2,10 @@ import Logo from "../../components/logo"
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuthRedirect } from "../../hooks/useAuthRedirect"
 
 export default function SignInPage() {
+    useAuthRedirect(false)
     const [name, setName] = useState('')
     const [error, setError] = useState('')
 

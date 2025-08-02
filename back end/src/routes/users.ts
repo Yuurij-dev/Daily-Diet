@@ -36,4 +36,28 @@ export async function usersRoutes(app: FastifyInstance) {
     }
    })
 
+   app.post('/login/:id', async (req, reply) => {
+    const {id} = req.params as {id: string}
+
+    reply.setCookie('user_id', id, {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+    }).send({message: "Login succeeded"})
+    })
+
+    app.get('/me', async(req, reply) => {
+        const userId = req.cookies.user_id
+
+        if(!userId) return reply.status(401).send({message: "Not logged."})
+
+        const user = await db('users').where('id', userId).first()
+
+        if(!user) {
+            return reply.status(401).send({message: "User invalid."})
+        }
+
+        return reply.send({user})
+    })
+    
 }

@@ -2,13 +2,14 @@ import womanImage from '../../assets/woman.png'
 import DietButton from '../../components/dietButton'
 
 import { useNavigate } from 'react-router-dom'
+import { useAuthRedirect } from '../../hooks/useAuthRedirect'
 
 export default function OnDietPage() {
-
+    useAuthRedirect(true)
     const navigate = useNavigate()
 
     const goToHome = () => {
-        navigate('/home')
+        navigate('/dashboard')
     }
     return(
         <section className='container w-full h-screen flex flex-col gap-8 items-center justify-center'>

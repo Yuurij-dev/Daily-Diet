@@ -7,6 +7,7 @@ import OnDietPage from './pages/onDietPage'
 import OutDietPage from './pages/outDietPage'
 import StatsUser from './pages/statsUser'
 import SnackPage from './pages/snackPage'
+import EditSnack from './pages/editSnack'
 
 function App() {
   return(
@@ -14,12 +15,13 @@ function App() {
       <Routes>
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/signin' element={<SignInPage/>}/>
-        <Route path='/home' element={<Home/>}/>
+        <Route path='/dashboard' element={<Home/>}/>
         <Route path='/newSnack' element={<NewSnack/>}/>
+        <Route path='/meal/edit/:id' element={<EditSnack/>}/>
         <Route path='/congratulations' element={<OnDietPage/>}/>
         <Route path='/pity' element={<OutDietPage/>}/>
         <Route path='/stats' element={<StatsUser/>}/>
-        <Route path='/snack' element={<SnackPage/>}/>
+        <Route path='/meal/:id' element={<SnackPage/>}/>
       </Routes>
     </Router>
   )

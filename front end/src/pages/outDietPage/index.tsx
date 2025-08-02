@@ -2,12 +2,14 @@ import manImage from '../../assets/man.png'
 import DietButton from '../../components/dietButton'
 
 import { useNavigate } from 'react-router-dom'
+import { useAuthRedirect } from '../../hooks/useAuthRedirect'
 
 export default function OutDietPage() {
+    useAuthRedirect(true)
     const navigate = useNavigate()
 
     const goToHome = () => {
-        navigate('/home')
+        navigate('/dashboard')
     }
 
     return(

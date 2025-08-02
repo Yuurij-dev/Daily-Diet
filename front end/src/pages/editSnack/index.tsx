@@ -7,7 +7,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import { useAuthRedirect } from "../../hooks/useAuthRedirect";
 
-export default function NewSnack() {
+export default function EditSnack() {
   useAuthRedirect(true)
   const [formData, setFormData] = useState({
     name: '',
@@ -19,7 +19,6 @@ export default function NewSnack() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Input genérico para texto
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -28,7 +27,6 @@ export default function NewSnack() {
     }));
   };
 
-  // Seleção de dieta (sim/não)
   const handleDietSelect = (value: boolean) => {
     setFormData(prev => ({
       ...prev,
@@ -36,8 +34,7 @@ export default function NewSnack() {
     }));
   };
 
-  // Validação e redirecionamento
-  const handleNewSnack = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleEditMeal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const { name, description, date_time, is_on_diet } = formData;
 
@@ -56,12 +53,7 @@ export default function NewSnack() {
         is_on_diet: is_on_diet
       }, {withCredentials: true})
       setError('')
-      
-      if(is_on_diet){
-        navigate('/congratulations')
-      }else{
-        navigate('/pity')
-      }
+      navigate('/dashboard')
     }catch(err){
       console.error('Erro ao criar cadrasto', err)
       setError('Erro ao criar refeição');
@@ -75,7 +67,7 @@ export default function NewSnack() {
         <div className="absolute left-[5%]">
             <FontAwesomeIcon onClick={() => navigate('/dashboard')} className="text-2xl" icon={faArrowLeft} />
         </div>
-        <h1 className="text-center text-[24px] font-bold">Nova refeição</h1>
+        <h1 className="text-center text-[24px] font-bold">Editar refeição</h1>
       </header>
 
       <main className="relative container !pt-[50px] top-[-20px] rounded-t-[20px] bg-white flex flex-col gap-6">
@@ -163,7 +155,7 @@ export default function NewSnack() {
         </div>
 
         <div className="!mt-[50px]">
-          <ButtonStyled onClick={handleNewSnack} textButton="Cadastrar refeição" />
+          <ButtonStyled onClick={handleEditMeal} textButton="Salvar Alterações" />
         </div>
       </main>
     </section>

@@ -5,6 +5,7 @@ import clsx from "clsx"
 import axios from "axios"
 
 import ButtonRemove from "../../components/buttonRemove"
+import { useAuthRedirect } from "../../hooks/useAuthRedirect"
 
 type User = {
     id: string
@@ -12,9 +13,24 @@ type User = {
     created_at: string
 }
 export default function LoginPage() {
+    useAuthRedirect(false)
+
+    const navigate = useNavigate()
+
     const [users, setUsers] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
 
+    // Check if user is logged
+    useEffect(() => {
+        axios.get('http://localhost:3333/users/me', {withCredentials: true})
+            .then(res => {
+                if(res.data.user){
+                    navigate(`/dashboard`)
+                }
+            }).catch(() => {})
+    }, [navigate])
+
+    // Get users 
     useEffect(() => {
         async function fetchUsers() {
             try{
@@ -29,23 +45,36 @@ export default function LoginPage() {
         fetchUsers()
     }, [])
 
-    const navigate = useNavigate()
-
-    const goToSignIn = () => {
-        navigate('/signin')
-    }
-
+    
     const [userSelect, setUserSelect] = useState<{id: string; name: string} | null>(null)
-
+    
     const handleSelectUser = (user: {id: string; name: string}) => {
         setUserSelect(user)
     }
-
-    const handleDeleteUser = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    
+    const handleDeleteUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if(!userSelect) return
         
         await fetch(`http://localhost:3333/users/${userSelect.id}`, {method: 'DELETE'})
+    }
+    
+    const goToSignIn = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        navigate('/signin')
+    }
+    
+    const makeLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        const userID = userSelect?.id
+        try{
+            await axios.post(`http://localhost:3333/users/login/${userID}`, {}, {
+                withCredentials: true,
+            })
+            navigate('/dashboard')
+        }catch(error){
+            console.error("Não foi possivel encontrar usuario", error)
+        }
     }
 
     return (
@@ -75,17 +104,16 @@ export default function LoginPage() {
             <form className="w-full flex flex-col gap-3">
                 {userSelect && (
                     <div>
-                        <button className="w-full h-15 bg-[#333638] text-white font-semibold rounded-md">Entrar como {userSelect.name}</button>,
+                        <button onClick={makeLogin}  className="w-full h-15 bg-[#333638] text-white font-semibold rounded-md">Entrar como {userSelect.name}</button>,
                     </div>
                 )}
-
                 <button onClick={goToSignIn} className="w-full h-15 bg-[#333638] text-white font-semibold rounded-md">Cadastrar Usuário</button>
             </form>
 
             {userSelect && (
-                <form onSubmit={handleDeleteUser} action="">
+                <form action="">
                     <div>
-                        <ButtonRemove textButton={`Excluir ${userSelect.name}`}/>  
+                        <ButtonRemove onClick={handleDeleteUser} textButton={`Excluir ${userSelect.name}`}/>  
                     </div>
                 </form>
             )}
