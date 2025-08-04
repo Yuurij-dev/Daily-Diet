@@ -59,5 +59,10 @@ export async function usersRoutes(app: FastifyInstance) {
 
         return reply.send({user})
     })
+
+    app.post('/logout', async (req, reply) => {
+        reply.clearCookie('user_id', {path: '/'})
+        return reply.send({message: "Deslogado com sucesso"})
+    })
     
 }

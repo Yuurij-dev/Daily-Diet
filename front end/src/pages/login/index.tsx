@@ -56,7 +56,14 @@ export default function LoginPage() {
         e.preventDefault()
         if(!userSelect) return
         
-        await fetch(`http://localhost:3333/users/${userSelect.id}`, {method: 'DELETE'})
+        const response = await fetch(`http://localhost:3333/users/${userSelect.id}`, {method: 'DELETE'})
+
+        if(response.ok) {
+            setUsers(prev => prev.filter(user => user.id !== userSelect.id))
+            setUserSelect(null)
+        }else{
+            console.error("Erro ao deletar o usuário.")
+        }
     }
     
     const goToSignIn = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -111,11 +118,7 @@ export default function LoginPage() {
             </form>
 
             {userSelect && (
-                <form action="">
-                    <div>
-                        <ButtonRemove onClick={handleDeleteUser} textButton={`Excluir ${userSelect.name}`}/>  
-                    </div>
-                </form>
+                <ButtonRemove onClick={handleDeleteUser} textButton={`Excluir ${userSelect.name}`}/>  
             )}
         </main>
     )

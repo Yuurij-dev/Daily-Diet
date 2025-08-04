@@ -81,16 +81,30 @@ export default function Home() {
         navigate(`/meal/${meal.id}`)
     }
 
+    const logOutUser = async () => {
+        await axios.post('http://localhost:3333/users/logout', {}, {
+            withCredentials: true
+        }) 
+        navigate('/login')
+    }
+
     if(!user){
         return <p>Carregando...</p>
     }
     return(
         <div className="container flex flex-col gap-9">
-            <header className="flex items-center justify-between">
+            <header className="flex justify-between ">
                 <LogoSmall/>
-                <h3 className="font-bold">{user.name}</h3>
+
+                <div className="flex gap-3 items-center justify-between">
+                    <h3 className="font-bold">{user.name}</h3>
+                    <button onClick={logOutUser} className=" h-10 !p-3 bg-[#333638] !text-white font-semibold rounded-md">Trocar de usuario</button>
+                </div>
+                
             </header>
-            <div onClick={() => navigate('/stats')} className="!py-9 w-full bg-[#E5F0DB] text-center rounded-xl flex flex-col gap-2">
+            <div onClick={() => navigate('/stats')} className={`!py-9 w-full bg-[#E5F0DB] text-center rounded-xl flex flex-col gap-2 ${
+                percentage > 49 && percentage !== 0 ? "bg-[#E5F0DB]" : "bg-[#f4e6e7]"
+            }`}>
                 <h2 className="text-[#333638] font-semibold text-4xl">{percentage.toFixed(2).replace('.', ',')}%</h2>
                 <span className="text-[#333638] text-[16px] font-medium">das refeições dentro da dieta</span>
             </div>
