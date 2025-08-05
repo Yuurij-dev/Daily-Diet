@@ -75,14 +75,16 @@ export default function LoginPage() {
     const makeLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         const userID = userSelect?.id
-        try{
-            await axios.post(`${apiUrl}/users/login/${userID}`, {}, {
-                withCredentials: true,
-            })
-            navigate('/dashboard')
-        }catch(error){
-            console.error("Não foi possivel encontrar usuario", error)
-        }
+
+        console.log(userID)
+        // try{
+        //     await axios.post(`${apiUrl}/users/login/${userID}`, {}, {
+        //         withCredentials: true,
+        //     })
+        //     navigate('/dashboard')
+        // }catch(error){
+        //     console.error("Não foi possivel encontrar usuario", error)
+        // }
     }
 
     return (
