@@ -85,7 +85,7 @@ export default function LoginPage() {
     }
 
     return (
-        <main className="container w-full h-screen flex items-center justify-center flex-col gap-10">
+        <main className="container w-full h-screen flex items-center justify-center flex-col gap-10 ">
             <Logo />
             {loading && (
                 <p>Carregando...</p>
