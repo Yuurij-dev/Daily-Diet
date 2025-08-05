@@ -72,6 +72,17 @@ export default function Home() {
         fetchMeals()
     }, [])
 
+    const groupedMeals = meals.reduce((acc, meal) => {
+        const date = new Date(meal.date_time)
+        const formatedDate = date.toLocaleDateString('pt-BR')
+
+        if(!acc[formatedDate]){
+            acc[formatedDate] = []
+        }
+
+        acc[formatedDate].push(meal)
+        return acc
+    }, {} as Record<string, typeof meals>)
 
     const goToNewSnack = () => {
         navigate('/newSnack')
@@ -121,22 +132,31 @@ export default function Home() {
                 }
             <section className="flex flex-col gap-10">
 
-                {meals.map((meal) => {
-                    const date = new Date(meal.date_time)
-                    const time = date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
 
-                    return(
-                    <div key={meal.id}>
-                        {/* <h1 className="font-semibold text-[#333638] text-[24px] !mb-5">12.08.22</h1> */}
-                        <div>
-                            <Snack onClick={() => handleSnack(meal)} name={meal.name} time={time} dietStatus={meal.is_on_diet ? 'bg-[#cbe4b4]' : 'bg-[#f3babd]'}/>
-                            
+
+                {Object.entries(groupedMeals).map(([date, mealsInDate]) => (
+                    <div key={date}>
+                        <h1 className="font-bold text-[#333638] text-[24px] !mb-5">{date}</h1>
+                        <div className="flex flex-col gap-4">
+                            {mealsInDate.map((meal) => {
+                            const time = new Date(meal.date_time).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                            });
+
+                            return (
+                                <Snack
+                                key={meal.id}
+                                onClick={() => handleSnack(meal)}
+                                name={meal.name}
+                                time={time}
+                                dietStatus={meal.is_on_diet ? 'bg-[#cbe4b4]' : 'bg-[#f3babd]'}
+                                />
+                            );
+                            })}
                         </div>
                     </div>
-                    )
-                })}
-
-                
+                ))}
             </section>
         </div>
     )
