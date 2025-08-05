@@ -45,6 +45,7 @@ export async function usersRoutes(app: FastifyInstance) {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
     }).send({message: "Login succeeded"})
     })
 
