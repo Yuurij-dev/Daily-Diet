@@ -6,6 +6,8 @@ import { useAuthRedirect } from "../../hooks/useAuthRedirect"
 
 export default function SignInPage() {
     useAuthRedirect(false)
+    const apiUrl = import.meta.env.VITE_API_URL
+
     const [name, setName] = useState('')
     const [error, setError] = useState('')
 
@@ -15,7 +17,7 @@ export default function SignInPage() {
 
         if(name != ''){
             try{
-                const response = await axios.post('http://localhost:3333/users',{
+                const response = await axios.post(`${apiUrl}/users`,{
                     name: name
                 })
                 navigate('/login')

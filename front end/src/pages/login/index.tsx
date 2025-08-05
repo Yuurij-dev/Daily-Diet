@@ -14,6 +14,7 @@ type User = {
 }
 export default function LoginPage() {
     useAuthRedirect(false)
+    const apiUrl = import.meta.env.VITE_API_URL
 
     const navigate = useNavigate()
 
@@ -22,19 +23,19 @@ export default function LoginPage() {
 
     // Check if user is logged
     useEffect(() => {
-        axios.get('http://localhost:3333/users/me', {withCredentials: true})
+        axios.get(`${apiUrl}/users/me`, {withCredentials: true})
             .then(res => {
                 if(res.data.user){
                     navigate(`/dashboard`)
                 }
             }).catch(() => {})
-    }, [navigate])
+    }, [navigate, apiUrl])
 
     // Get users 
     useEffect(() => {
         async function fetchUsers() {
             try{
-                const response = await axios.get('http://localhost:3333/users')
+                const response = await axios.get(`${apiUrl}/users`)
                 setUsers(response.data)
             } catch(error) {
                 console.error("Erro ao buscar usuários", error)
@@ -43,7 +44,7 @@ export default function LoginPage() {
             }
         }
         fetchUsers()
-    }, [])
+    }, [apiUrl])
 
     
     const [userSelect, setUserSelect] = useState<{id: string; name: string} | null>(null)
@@ -56,7 +57,7 @@ export default function LoginPage() {
         e.preventDefault()
         if(!userSelect) return
         
-        const response = await fetch(`http://localhost:3333/users/${userSelect.id}`, {method: 'DELETE'})
+        const response = await fetch(`${apiUrl}/users/${userSelect.id}`, {method: 'DELETE'})
 
         if(response.ok) {
             setUsers(prev => prev.filter(user => user.id !== userSelect.id))
@@ -75,7 +76,7 @@ export default function LoginPage() {
         e.preventDefault()
         const userID = userSelect?.id
         try{
-            await axios.post(`http://localhost:3333/users/login/${userID}`, {}, {
+            await axios.post(`${apiUrl}/users/login/${userID}`, {}, {
                 withCredentials: true,
             })
             navigate('/dashboard')

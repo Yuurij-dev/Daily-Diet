@@ -24,28 +24,30 @@ type User = {
 
 export default function Home() {
     useAuthRedirect(true)
+    const apiUrl = import.meta.env.VITE_API_URL
+    
     const navigate = useNavigate()
 
     // Check if user is logged
     useEffect(() => {
-        axios.get('http://localhost:3333/users/me', {withCredentials: true})
+        axios.get(`${apiUrl}/users/me`, {withCredentials: true})
             .then(res => {
                 if(!res.data.user){
                     navigate(`/login`)
                 }
             }).catch(() => {})
-    }, [navigate])
+    }, [navigate, apiUrl])
 
     const [user, setuser] = useState<User | null>(null)
 
     useEffect(() => {
         async function fetchUser() {
-            const response = await axios.get('http://localhost:3333/users/me', {withCredentials: true})
+            const response = await axios.get(`${apiUrl}/users/me`, {withCredentials: true})
 
             setuser(response.data.user)
         }
         fetchUser()
-    }, [user])
+    }, [user, apiUrl])
 
     const [meals, setMeals] = useState<Meal[]>([])
     const [percentage, setPersenteg] = useState(0)
@@ -54,7 +56,7 @@ export default function Home() {
     useEffect(() => {
         async function fetchMeals(){
             try{
-                const response = await axios.get('http://localhost:3333/meals', {withCredentials: true})
+                const response = await axios.get(`${apiUrl}/meals`, {withCredentials: true})
                 setMeals(response.data)
 
                 const totalMeals = response.data.length
@@ -70,7 +72,7 @@ export default function Home() {
             }
         }
         fetchMeals()
-    }, [])
+    }, [apiUrl])
 
     const groupedMeals = meals.reduce((acc, meal) => {
         const date = new Date(meal.date_time)
@@ -93,7 +95,7 @@ export default function Home() {
     }
 
     const logOutUser = async () => {
-        await axios.post('http://localhost:3333/users/logout', {}, {
+        await axios.post(`${apiUrl}/users/logout`, {}, {
             withCredentials: true
         }) 
         navigate('/login')

@@ -4,12 +4,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 
 export function useAuthRedirect(shouldBeLoggedIn: boolean){
+    const apiUrl = import.meta.env.VITE_API_URL
     const navigate = useNavigate()
     const location = useLocation()
 
     useEffect(() => {
         axios
-            .get('http://localhost:3333/users/me', { withCredentials: true })
+            .get(`${apiUrl}/users/me`, { withCredentials: true })
             .then((res) => {
                 const isLogged = !!res.data.user
 
@@ -24,5 +25,5 @@ export function useAuthRedirect(shouldBeLoggedIn: boolean){
                     navigate('/login')
                 }
             })
-    }, [navigate, shouldBeLoggedIn, location.pathname])
+    }, [navigate, shouldBeLoggedIn, apiUrl, location.pathname])
 }

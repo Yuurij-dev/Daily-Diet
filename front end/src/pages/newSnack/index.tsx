@@ -9,6 +9,8 @@ import { useAuthRedirect } from "../../hooks/useAuthRedirect";
 
 export default function NewSnack() {
   useAuthRedirect(true)
+  const apiUrl = import.meta.env.VITE_API_URL
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -49,7 +51,7 @@ export default function NewSnack() {
     }
 
     try{
-        axios.post('http://localhost:3333/meals/',{
+        axios.post(`${apiUrl}/meals/`,{
         name: name,
         description: description,
         date_time: date_time,

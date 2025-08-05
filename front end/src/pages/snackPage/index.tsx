@@ -21,6 +21,8 @@ type Meal = {
 
 export default function SnackPage() {
     useAuthRedirect(true)
+    const apiUrl = import.meta.env.VITE_API_URL
+
     const {id} = useParams()
 
     const navigate = useNavigate()
@@ -30,7 +32,7 @@ export default function SnackPage() {
     useEffect(() => {
         async function fetchMeal() {
             try{
-                const response = await axios.get(`http://localhost:3333/meals/${id}`, {withCredentials: true})
+                const response = await axios.get(`${apiUrl}/meals/${id}`, {withCredentials: true})
 
                 setMeal(response.data)
             }catch(err){
@@ -40,7 +42,7 @@ export default function SnackPage() {
         if(id){
             fetchMeal()
         }
-    }, [id])
+    }, [id, apiUrl])
 
     if (!meal) {
         return <p>Carregando...</p>;
@@ -53,7 +55,7 @@ export default function SnackPage() {
     const handleRemove = async () => {
 
         try{
-            await axios.delete(`http://localhost:3333/meals/${id}`, {withCredentials: true})
+            await axios.delete(`${apiUrl}/meals/${id}`, {withCredentials: true})
             navigate('/dashboard')
         }catch(err){
             console.error("Erro ao remover usuario", err)

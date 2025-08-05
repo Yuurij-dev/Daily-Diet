@@ -18,6 +18,7 @@ type Meal = {
 
 export default function StatsUser() {
     useAuthRedirect(true)
+    const apiUrl = import.meta.env.VITE_API_URL
 
     const [meals, setMeals] = useState<Meal[]>([])
     const [mealsOnDiet, setMealsOnDiet] = useState(0)
@@ -27,7 +28,7 @@ export default function StatsUser() {
     useEffect(() => {
         async function fetchMeals(){
             try{
-                const response = await axios.get('http://localhost:3333/meals', {withCredentials: true})
+                const response = await axios.get(`${apiUrl}/meals`, {withCredentials: true})
                 setMeals(response.data)
 
                 const totalMeals = response.data.length
@@ -42,7 +43,7 @@ export default function StatsUser() {
             }
         }
         fetchMeals()
-    }, [])
+    }, [apiUrl])
 
     const navigate = useNavigate()
 

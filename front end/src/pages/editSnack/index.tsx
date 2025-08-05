@@ -10,6 +10,8 @@ import { useParams } from "react-router-dom";
 
 export default function EditSnack() {
   useAuthRedirect(true)
+  const apiUrl = import.meta.env.VITE_API_URL
+
   const { id } = useParams()
   const [formData, setFormData] = useState({
     name: '',
@@ -48,7 +50,7 @@ export default function EditSnack() {
     }
 
     try{
-        axios.put(`http://localhost:3333/meals/${id}`,{
+        axios.put(`${apiUrl}/meals/${id}`,{
         name: name,
         description: description,
         date_time: date_time,
