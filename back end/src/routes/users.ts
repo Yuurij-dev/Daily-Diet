@@ -18,11 +18,13 @@ export async function usersRoutes(app: FastifyInstance) {
 
         const {name} = createUserSchema.parse(request.body)
 
-        await db('users').insert({
+        const user = {
             id: randomUUID(),
             name,
-        })
-        return reply.status(201).send();
+        }
+        await db('users').insert(user)
+
+        return reply.status(201).send(user);
     })
 
    app.delete('/:id', async (req, res) => {

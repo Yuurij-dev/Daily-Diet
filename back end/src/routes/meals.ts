@@ -26,16 +26,17 @@ export default function mealsRoutes(app: FastifyInstance) {
             return reply.status(400).send({message: "Invalid date_time format"})
         }
 
-        await db('meals').insert({
+        const meal = {
             id: randomUUID(),
             user_id,
             name,
             description,
             date_time: parsedDate,
             is_on_diet,
-        })
+        }
+        await db('meals').insert(meal)
 
-        return reply.status(201).send({message: "Meal created with success"})
+        return reply.status(201).send(meal)
     })
 
     app.get('/', async (req, reply) => {
@@ -78,7 +79,7 @@ export default function mealsRoutes(app: FastifyInstance) {
             if(!mealRemove){
                 return reply.status(404).send({message: "Refeição exluida com sucesso"})
             }
-            return reply.send(mealRemove)
+            return reply.status(204).send(mealRemove)
         } catch (error){
             reply.status(500).send({error: "Erro ao deletar refeição."})
         }
