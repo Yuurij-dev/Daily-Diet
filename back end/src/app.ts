@@ -10,7 +10,7 @@ export const app = fastify()
 
 
 await app.register(cors, {
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://daily-diet-five.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 });
