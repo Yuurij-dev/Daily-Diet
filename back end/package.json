@@ -10,6 +10,7 @@
     "dev": "tsx watch src/server.ts",
     "knex": "tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts",
     "test": "vitest",
+    "build": "tsup src --out-dir build --target es2022 --format esm",
     "start": "npm run knex migrate:latest && node build/server.js"
   },
   "author": "",
