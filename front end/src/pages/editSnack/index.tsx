@@ -6,9 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import { useAuthRedirect } from "../../hooks/useAuthRedirect";
+import { useParams } from "react-router-dom";
 
 export default function EditSnack() {
   useAuthRedirect(true)
+  const { id } = useParams()
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -46,7 +48,7 @@ export default function EditSnack() {
     }
 
     try{
-        axios.post('http://localhost:3333/meals/',{
+        axios.put(`http://localhost:3333/meals/${id}`,{
         name: name,
         description: description,
         date_time: date_time,
